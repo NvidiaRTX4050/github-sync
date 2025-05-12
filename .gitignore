@@ -1,0 +1,13 @@
+# Ignore build files
+target/
+
+# Ignore cargo lock files (optional, for library projects)
+Cargo.lock
+
+# Ignore IDE files
+.idea/
+.vscode/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
