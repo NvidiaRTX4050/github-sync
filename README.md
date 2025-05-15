@@ -1,4 +1,5 @@
-![Logo](./GitHubSync.png)
+<img src="./GitHubSync.png" alt="Diagram" style="max-width: 50%; height: auto;" />
+
 
 # Jugaad Sync
 
