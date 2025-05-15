@@ -1,4 +1,7 @@
-<img src="./GitHubSync.png" alt="Diagram" width="400"/>
+<div align="center">
+  <img src="./GitHubSync.png" alt="Diagram" width="400"/>
+</div>
+
 
 
 
