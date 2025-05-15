@@ -1,4 +1,4 @@
-![Logo](./GithubSync.png)
+![Logo](./GitHubSync.png)
 
 # Jugaad Sync
 
