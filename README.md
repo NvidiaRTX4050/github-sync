@@ -1,4 +1,5 @@
-<img src="./GitHubSync.png" alt="Diagram" style="max-width: 50%; height: auto;" />
+<img src="./GitHubSync.png" alt="Diagram" width="400"/>
+
 
 
 # Jugaad Sync
