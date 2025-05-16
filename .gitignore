@@ -5,7 +5,6 @@ target/
 Cargo.lock
 
 # Ignore IDE files
-.idea/
 .vscode/
 
 # Ignore OS-specific files

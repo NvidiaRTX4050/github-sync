@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./GitHubSync.png" alt="Diagram" width="400"/>
+  <img src="./ChatGPT_Image_May_16__2025__07_04_58_PM-removebg-preview.png" alt="Diagram" width="400"/>
 </div>
 
 
