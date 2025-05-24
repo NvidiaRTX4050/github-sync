@@ -1,0 +1,13 @@
+[package]
+name = "github-sync"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = "0.4.41"
+clap = "4.5.38"
+colored = "3.0.0"
+crossterm = "0.29.0"
+logger = "0.4.0"
+notify = "8.0.0"
+ratatui = "0.29.0"
