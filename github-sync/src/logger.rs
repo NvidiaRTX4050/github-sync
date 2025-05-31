@@ -1,104 +1,53 @@
 // src/logger.rs
 
 use colored::*;
-/*pub enum Status {
-    // General statuses
-    OK,
-    FAIL,
-    WARN,
-    INFO,
-    DEBUG,
+use chrono::Local;
 
-    // Auth module
-    AuthSuccess,
-    AuthFailed,
-    UserCancelled,
-
-    // Init module
-    InitStarted,
-    InitSuccess,
-    InitAlreadyExists,
-    InitFailed,
-
-    // Watcher (file change detection)
-    WatchStarted,
-    FileAdded(String),
-    FileRemoved(String),
-    FileModified(String),
-    FileRenamed { from: String, to: String },
-    NoChanges,
-    IdleTimeout,
-
-    // Sync logic
-    SyncStarted,
-    SyncComplete,
-    SyncConflict,
-    SyncSkipped,
-    SyncAborted,
-    SyncError(String),
-
-    // Git operations
-    GitPullSuccess,
-    GitPullConflict,
-    GitCommitCreated,
-    GitCommitSkipped,
-    GitPushSuccess,
-    GitPushFailed,
-    GitBranchBackup(String), // For backups like safe-deletion-2025-05-24
-
-    // Safety / validation
-    BulkDeletionWarning(u32),  // % files deleted
-    UnsafeOperationBlocked,
-    SafeModeActivated,
-    BackupBranchCreated(String),
-
-    // Remote status
-    RemoteConnected,
-    RemoteDisconnected,
-    RemoteError(String),
-
-    // Internal / misc
-    ConfigLoaded,
-    ConfigMissing,
-    ConfigError(String),
-    TempFileError(String),
-}
- */
+#[derive(Debug)]
 pub enum Status {
-    Ok,
-    Fail,
-    Info,
+    Success,  // For successful operations
+    Error,    // For failures and errors
+    Info,     // For general information
+    Warn,     // For warnings
+    Sync,     // For sync-specific operations
+    Watch,    // For file watcher events
 }
 
-pub fn log(module: &str, status: Status, message: &str) {
+pub fn log(status: Status, message: &str) {
+    let timestamp = Local::now().format("%H:%M:%S").to_string().dimmed();
+    
     let status_str = match status {
-        Status::Ok => "[ OK ]".green(),
-        Status::Fail => "[FAIL]".red(),
-        Status::Info => "[INFO]".cyan(),
+        Status::Success => "✓".green().bold(),
+        Status::Error => "✗".red().bold(),
+        Status::Info => "ℹ".bright_blue().bold(),
+        Status::Warn => "!".yellow().bold(),
+        Status::Sync => "⟳".magenta().bold(),
+        Status::Watch => "👁".bright_cyan().bold(),
     };
 
-    let module_str = format!("[ {} ]", module).yellow();
-
-    println!("{} {} {}", module_str, status_str, message);
+    println!("{} {} {}", timestamp, status_str, message);
 }
 
-// Convenience wrappers
-pub fn log_ok(module: &str, message: &str) {
-    log(module, Status::Ok, message);
-}
+// Convenience functions
+pub fn success(msg: &str) { log(Status::Success, msg); }
+pub fn error(msg: &str) { log(Status::Error, msg); }
+pub fn info(msg: &str) { log(Status::Info, msg); }
+pub fn warn(msg: &str) { log(Status::Warn, msg); }
+pub fn sync(msg: &str) { log(Status::Sync, msg); }
+pub fn watch(msg: &str) { log(Status::Watch, msg); }
 
-pub fn log_fail(module: &str, message: &str) {
-    log(module, Status::Fail, message);
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-pub fn log_info(module: &str, message: &str) {
-    log(module, Status::Info, message);
-}
-
-fn main()
-{
-    log_ok("auth", "Token saved.");
-    log_fail("watcher", "No changes detected.");
-    log_info("sync", "Started syncing with remote.");
-
+    #[test]
+    fn test_all_log_types() {
+        println!("\nLogger Demo:");
+        success("Repository synchronized successfully");
+        error("Failed to connect to remote");
+        info("Initializing sync service");
+        warn("Large number of files changed");
+        sync("Pulling changes from remote");
+        watch("File modified: src/main.rs");
+    }
 }

@@ -1,20 +1,87 @@
-mod cli;
+use clap::{Parser, Subcommand};
+use colored::*;
+
 mod commands;
+mod config;
+mod error;
+mod git;
+mod github;
+mod logger;
+mod watcher;
+mod remote_watcher;
 
-use cli::{Cli, Commands};
-use clap::Parser;
+#[derive(Parser)]
+#[command(name = "ghs")]
+#[command(about = "Two-way file synchronization using Git", long_about = None)]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
 
-fn main() {
+#[derive(Subcommand)]
+enum Commands {
+    /// Start the GitHub Sync service
+    Start {
+        /// Name of the repository to sync
+        #[arg(short, long)]
+        name: String,
+    },
+    
+    /// Stop the GitHub Sync service
+    Stop,
+    
+    /// Show current status
+    Status,
+    
+    /// Configure GitHub Sync
+    Config {
+        /// Branch to sync with
+        #[arg(short, long)]
+        branch: Option<String>,
+        
+        /// Sync interval in seconds
+        #[arg(short, long)]
+        interval: Option<u64>,
+    },
+
+    /// Authenticate with GitHub
+    Auth {
+        /// GitHub personal access token
+        token: String,
+    },
+
+    /// Manually push changes to remote
+    Push,
+
+    /// Manually pull changes from remote
+    Pull,
+
+    /// Show sync history
+    Logs,
+}
+
+#[tokio::main]
+async fn main() {
     let cli = Cli::parse();
 
-    match cli.command {
-        Commands::Start => commands::start::handle(),
+    let result = match cli.command {
+        Commands::Start { name } => commands::start::handle(name).await,
         Commands::Stop => commands::stop::handle(),
         Commands::Status => commands::status::handle(),
+        Commands::Config { branch, interval } => {
+            commands::config::handle(branch, interval)
+        }
+        Commands::Auth { token } => {
+            github::GitHub::save_token(&token)
+        }
         Commands::Push => commands::push::handle(),
         Commands::Pull => commands::pull::handle(),
         Commands::Logs => commands::logs::handle(),
-        Commands::Config => commands::config::handle(),
+    };
+
+    if let Err(e) = result {
+        logger::error(&format!("Error: {}", e));
+        std::process::exit(1);
     }
 }
 

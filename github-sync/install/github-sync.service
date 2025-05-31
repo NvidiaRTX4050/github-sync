@@ -1,0 +1,15 @@
+[Unit]
+Description=GitHub Sync Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ghs start
+ExecStop=/usr/bin/ghs stop
+Restart=on-failure
+RestartSec=5
+User=%i
+
+[Install]
+WantedBy=multi-user.target 
