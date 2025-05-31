@@ -149,7 +149,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-Made with ❤️ by [Your Name]
+Made with ❤️ by Omkar Bhor
 
 [⭐ Star on GitHub](https://github.com/yourusername/github-sync) | [🐛 Report Bug](https://github.com/yourusername/github-sync/issues) | [✨ Request Feature](https://github.com/yourusername/github-sync/issues)
 
